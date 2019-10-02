@@ -3,14 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "qs": "^6.9.0",
     "react": "^16.10.1",
     "react-dom": "^16.10.1"
   },
   "devDependencies": {
     "@types/jest": "24.0.18",
     "@types/node": "12.7.9",
+    "@types/qs": "^6.5.3",
     "@types/react": "16.9.4",
     "@types/react-dom": "16.9.1",
+    "cross-env": "^6.0.3",
     "husky": "^3.0.8",
     "lint-staged": "^9.4.1",
     "prettier": "^1.18.2",
@@ -24,9 +27,11 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "test": "react-scripts test",
+    "test:staged": "cross-env CI=true react-scripts test --env=jsdom --findRelatedTests",
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
+    "ts-check": "tsc",
     "lint": "tslint -c tslint.json src/**/*.{ts,tsx} --fix --format verbose",
     "format": "prettier --write src/**/*.{js,jsx,json,css,scss,md}"
   },
@@ -38,13 +43,14 @@
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "tsc && lint-staged"
     }
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
       "yarn format",
       "yarn lint",
+      "yarn test:staged",
       "git add"
     ]
   }
