@@ -34,11 +34,12 @@
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "test": "react-scripts test",
-    "test:staged": "cross-env CI=true react-scripts test --env=jsdom --findRelatedTests",
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
     "ts-check": "tsc",
-    "lint": "tslint -c tslint.json src/**/*.{ts,tsx} --fix --format verbose",
+    "lint": "tslint -c tslint.json --fix --format verbose src/**/*.{ts,tsx}",
     "format": "prettier --write src/**/*.{js,jsx,json,css,scss,md}",
+    "test:staged": "cross-env CI=true react-scripts test --env=jsdom --findRelatedTests",
+    "lint:staged": "tslint -c tslint.json --fix",
     "format:staged": "prettier --write"
   },
   "eslintConfig": {
@@ -49,12 +50,13 @@
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "tsc && && yarn lint && lint-staged"
+      "pre-commit": "tsc && lint-staged"
     }
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
       "yarn format:staged",
+      "yarn lint:staged",
       "yarn test:staged",
       "git add"
     ]

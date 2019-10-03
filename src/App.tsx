@@ -21,11 +21,10 @@ const App: React.FC = () => {
         <div className={styles.Grow}>
           <img src={logo} className={styles.AppLogo} alt="logo" />
         </div>
-
-        <h2>TypeRacer Game</h2>
+        <h2>Type Racer Game</h2>
         <div className="">Increase your typing speed!</div>
         <br />
-        <Button color="teal" size="large">
+        <Button color="teal" size="big">
           Start &nbsp; &#x1F680;
         </Button>
       </header>
