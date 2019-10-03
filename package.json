@@ -3,11 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "classnames": "^2.2.6",
     "qs": "^6.9.0",
     "react": "^16.10.1",
-    "react-dom": "^16.10.1"
+    "react-dom": "^16.10.1",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.88.1"
   },
   "devDependencies": {
+    "@types/classnames": "^2.2.9",
     "@types/jest": "24.0.18",
     "@types/node": "12.7.9",
     "@types/qs": "^6.5.3",
@@ -16,6 +20,7 @@
     "cross-env": "^6.0.3",
     "husky": "^3.0.8",
     "lint-staged": "^9.4.1",
+    "node-sass": "^4.12.0",
     "prettier": "^1.18.2",
     "react-scripts": "3.1.2",
     "tslint": "^5.20.0",
@@ -33,7 +38,8 @@
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
     "ts-check": "tsc",
     "lint": "tslint -c tslint.json src/**/*.{ts,tsx} --fix --format verbose",
-    "format": "prettier --write src/**/*.{js,jsx,json,css,scss,md}"
+    "format": "prettier --write src/**/*.{js,jsx,json,css,scss,md}",
+    "format:staged": "prettier --write"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -43,13 +49,12 @@
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "tsc && lint-staged"
+      "pre-commit": "tsc && && yarn lint && lint-staged"
     }
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "yarn format",
-      "yarn lint",
+      "yarn format:staged",
       "yarn test:staged",
       "git add"
     ]
