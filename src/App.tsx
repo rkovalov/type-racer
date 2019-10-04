@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import styles from './App.module.scss';
+import Page404 from './components/Page404';
 import Home from './modules/Home';
 
 import { fetchRandomText } from './dataProvider';
@@ -17,9 +18,9 @@ const App: React.FC = () => {
     <div className={styles.app}>
       <Router>
         <Switch>
-          <Route path="/">
-            <Home />
-          </Route>
+          <Route exact path="/" component={Home} />
+          <Route path="/dashboard">In Game</Route>
+          <Route component={Page404} />
         </Switch>
       </Router>
     </div>

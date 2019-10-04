@@ -1,14 +1,22 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import { Button } from 'semantic-ui-react';
 
 import styles from './Home.module.scss';
 import logo from './logo.png';
 import SignInModal from './SignInModal';
 
-export default function Home() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = useCallback(() => setIsModalOpen(true), []);
-  const closeModal = useCallback(() => setIsModalOpen(false), []);
+const Home = (props: RouteComponentProps) => {
+  const { match, history, location } = props;
+  const openSignModal = useCallback(() => {
+    history.push('/?sign-in');
+  }, [history]);
+  const closeSignModal = useCallback(() => {
+    history.push(match.path);
+  }, [history, match]);
+  const isSignModalOpen = useMemo(() => location.search.includes('?sign-in'), [
+    location.search,
+  ]);
   return (
     <>
       <header className={styles.header}>
@@ -20,11 +28,13 @@ export default function Home() {
         <h2>Type Racer Game</h2>
         <div className="">Increase your typing speed!</div>
         <br />
-        <Button color="teal" size="big" onClick={openModal}>
+        <Button color="teal" size="big" onClick={openSignModal}>
           Start &nbsp; &#x1F680;
         </Button>
-        <SignInModal open={isModalOpen} onClose={closeModal} />
+        <SignInModal onClose={closeSignModal} open={isSignModalOpen} />
       </main>
     </>
   );
-}
+};
+
+export default Home;

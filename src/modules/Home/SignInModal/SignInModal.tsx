@@ -14,15 +14,13 @@ interface Props {
   open: boolean;
   onClose: () => void;
 }
-
 type Gender = 'male' | 'female';
 
-const SignInModal = React.memo(({ open, onClose }: Props) => {
+const SignInModal = React.memo(({ onClose, open }: Props) => {
   const [gender, setGender] = useState<Gender>('male');
   const [nickName, setNickName] = useState('');
   const changeNickName = useCallback((_, { value }) => setNickName(value), []);
   const changeGender = useCallback((_, { value }) => setGender(value), []);
-
   return (
     <Modal dimmer size="small" open={open} onClose={onClose}>
       <Modal.Content image>
