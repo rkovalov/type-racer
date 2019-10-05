@@ -40,7 +40,7 @@ const SignInModal = React.memo(({ onClose, open, onSigninSuccess }: Props) => {
         />
         <Modal.Description>
           <Header>Sign in</Header>
-          <Form>
+          <Form onSubmit={login}>
             <Form.Field>
               <Input
                 error={hasError}
@@ -60,13 +60,7 @@ const SignInModal = React.memo(({ onClose, open, onSigninSuccess }: Props) => {
                 onChange={changePassword}
               />
             </Form.Field>
-            <Button
-              fluid
-              type="submit"
-              color="teal"
-              disabled={!isValid}
-              onClick={login}
-            >
+            <Button fluid type="submit" color="teal" disabled={!isValid}>
               Sign in
             </Button>
             {hasError && (
