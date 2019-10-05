@@ -6,62 +6,72 @@ import {
   Icon,
   Image,
   Input,
+  Message,
   Modal,
-  Radio,
 } from 'semantic-ui-react';
+
+import { signin } from './users';
 
 interface Props {
   open: boolean;
   onClose: () => void;
 }
-type Gender = 'male' | 'female';
 
 const SignInModal = React.memo(({ onClose, open }: Props) => {
-  const [gender, setGender] = useState<Gender>('male');
-  const [nickName, setNickName] = useState('');
+  const [nickname, setNickName] = useState('');
+  const [hasError, setHasError] = useState(false);
+  const [password, setPassword] = useState('');
   const changeNickName = useCallback((_, { value }) => setNickName(value), []);
-  const changeGender = useCallback((_, { value }) => setGender(value), []);
+  const changePassword = useCallback((_, { value }) => setPassword(value), []);
+  const login = useCallback(() => {
+    if (!signin({ nickname, password })) {
+      setHasError(true);
+    }
+  }, [nickname, password]);
+  const isValid = nickname && password;
   return (
     <Modal dimmer size="small" open={open} onClose={onClose}>
       <Modal.Content image>
         <Image
           circular
           size="medium"
-          src={process.env.PUBLIC_URL + `/${gender}.png`}
+          src={process.env.PUBLIC_URL + '/male.png'}
         />
         <Modal.Description>
-          <Header>Profile</Header>
+          <Header>Sign in</Header>
           <Form>
             <Form.Field>
               <Input
-                focus
-                placeholder="Your Nickname..."
+                error={hasError}
+                placeholder="Nickname..."
                 icon={<Icon name="user" color="blue" />}
-                value={nickName}
+                value={nickname}
                 onChange={changeNickName}
               />
             </Form.Field>
             <Form.Field>
-              <Radio
-                label="male"
-                name="gender"
-                value="male"
-                checked={gender === 'male'}
-                onChange={changeGender}
+              <Input
+                error={hasError}
+                type="password"
+                placeholder="Password..."
+                icon={<Icon name="key" color="blue" />}
+                value={password}
+                onChange={changePassword}
               />
             </Form.Field>
-            <Form.Field>
-              <Radio
-                label="female"
-                name="gender"
-                value="female"
-                checked={gender === 'female'}
-                onChange={changeGender}
-              />
-            </Form.Field>
-            <Button disabled={!nickName} type="submit" color="teal">
-              Apply
+            <Button
+              disabled={!isValid}
+              type="submit"
+              color="teal"
+              onClick={login}
+            >
+              Sign in
             </Button>
+            {hasError && (
+              <Message negative>
+                <p>Try another nickname or password</p>
+              </Message>
+            )}
           </Form>
         </Modal.Description>
       </Modal.Content>
