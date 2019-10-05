@@ -33,9 +33,12 @@ const setUserToStorage = ({ password, ...user }: User) => {
   sessionStorage.setItem(sessionStorageKey, JSON.stringify(user));
 };
 
-export const isAuthenticated = (): boolean => {
-  return !!sessionStorage.getItem(sessionStorageKey);
+export const getUser = (): User => {
+  const user = sessionStorage.getItem(sessionStorageKey);
+  return user ? JSON.parse(user) : user;
 };
+
+export const isAuthenticated = (): boolean => !!getUser();
 
 export const signout = (): Promise<undefined> =>
   new Promise(resolve => {
@@ -45,7 +48,7 @@ export const signout = (): Promise<undefined> =>
 
 export const signin = (
   user: Pick<User, 'nickname' | 'password'>,
-): Promise<undefined> =>
+): Promise<User> =>
   new Promise((resolve, reject) => {
     const userDb = users.find(
       ({ nickname, password }) =>
@@ -53,7 +56,7 @@ export const signin = (
     );
     if (userDb) {
       setUserToStorage(userDb);
-      resolve();
+      resolve(userDb);
     } else {
       reject();
     }

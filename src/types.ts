@@ -3,3 +3,8 @@ export interface User {
   password: string;
   gender: 'female' | 'male';
 }
+
+export interface Player {
+  nickname: string;
+  wpm: number;
+}

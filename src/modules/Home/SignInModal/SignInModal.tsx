@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import {
   Button,
   Form,
@@ -10,6 +10,7 @@ import {
   Modal,
 } from 'semantic-ui-react';
 
+import StoreContext from '../../../store/context';
 import { signin } from '../../../store/session';
 
 interface Props {
@@ -19,6 +20,7 @@ interface Props {
 }
 
 const SignInModal = React.memo(({ onClose, open, onSigninSuccess }: Props) => {
+  const [, setState] = useContext(StoreContext);
   const [nickname, setNickName] = useState('');
   const [hasError, setHasError] = useState(false);
   const [password, setPassword] = useState('');
@@ -26,9 +28,12 @@ const SignInModal = React.memo(({ onClose, open, onSigninSuccess }: Props) => {
   const changePassword = useCallback((_, { value }) => setPassword(value), []);
   const login = useCallback(() => {
     signin({ nickname, password })
-      .then(onSigninSuccess)
+      .then(user => {
+        setState(prevState => ({ ...prevState, currentUser: user }));
+        onSigninSuccess();
+      })
       .catch(() => setHasError(true));
-  }, [nickname, password, onSigninSuccess]);
+  }, [nickname, password, onSigninSuccess, setState]);
   const isValid = nickname && password;
   return (
     <Modal dimmer size="small" open={open} onClose={onClose}>
