@@ -16,12 +16,6 @@ const App: React.FC = () => {
     ...getInitialState(),
     currentUser: getUser(),
   });
-  // const [texts, setTexts] = useState<string[]>([]);
-  // tslint:disable-next-line:no-console
-  // console.log(texts);
-  // useEffect(() => {
-  //   fetchRandomText().then(setTexts);
-  // }, []);
   return (
     <div className={styles.app}>
       <StoreContext.Provider value={[state, setState]}>
