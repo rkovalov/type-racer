@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Dropdown, Grid, Header, Image } from 'semantic-ui-react';
 import { signout } from '../../store/session';
-import ActivityFeed from '../ActivityFeed';
+import TopPlayers from '../TopPlayers';
 
 import StoreContext from '../../store/context';
 
@@ -39,7 +39,7 @@ const Dashboard = () => {
       </Header>
       <Grid divided inverted stretched style={{ height: '100vh' }}>
         <Grid.Column width={4}>
-          <ActivityFeed />
+          <TopPlayers />
         </Grid.Column>
         <Grid.Column width={12}>Dashboard</Grid.Column>
       </Grid>
