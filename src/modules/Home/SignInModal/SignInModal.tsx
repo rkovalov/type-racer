@@ -10,24 +10,25 @@ import {
   Modal,
 } from 'semantic-ui-react';
 
-import { signin } from './users';
+import { signin } from '../../../store/session';
 
 interface Props {
   open: boolean;
   onClose: () => void;
+  onSigninSuccess: () => void;
 }
 
-const SignInModal = React.memo(({ onClose, open }: Props) => {
+const SignInModal = React.memo(({ onClose, open, onSigninSuccess }: Props) => {
   const [nickname, setNickName] = useState('');
   const [hasError, setHasError] = useState(false);
   const [password, setPassword] = useState('');
   const changeNickName = useCallback((_, { value }) => setNickName(value), []);
   const changePassword = useCallback((_, { value }) => setPassword(value), []);
   const login = useCallback(() => {
-    if (!signin({ nickname, password })) {
-      setHasError(true);
-    }
-  }, [nickname, password]);
+    signin({ nickname, password })
+      .then(onSigninSuccess)
+      .catch(() => setHasError(true));
+  }, [nickname, password, onSigninSuccess]);
   const isValid = nickname && password;
   return (
     <Modal dimmer size="small" open={open} onClose={onClose}>
@@ -60,9 +61,10 @@ const SignInModal = React.memo(({ onClose, open }: Props) => {
               />
             </Form.Field>
             <Button
-              disabled={!isValid}
+              fluid
               type="submit"
               color="teal"
+              disabled={!isValid}
               onClick={login}
             >
               Sign in

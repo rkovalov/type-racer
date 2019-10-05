@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import styles from './App.module.scss';
 import Page404 from './components/Page404';
+import PrivateRoute from './components/PrivateRoute';
+import Dashboard from './modules/Dashboard';
 import Home from './modules/Home';
 
 import { fetchRandomText } from './dataProvider';
@@ -19,7 +21,7 @@ const App: React.FC = () => {
       <Router>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/dashboard">In Game</Route>
+          <PrivateRoute path="/dashboard" component={Dashboard} />
           <Route component={Page404} />
         </Switch>
       </Router>

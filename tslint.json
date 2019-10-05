@@ -4,6 +4,7 @@
   "rules": {
     "prettier": [true, null, { "editorconfig": false }],
     "interface-name": false,
-    "jsx-boolean-value": false
+    "jsx-boolean-value": false,
+    "jsx-no-lambda": false
   }
 }
