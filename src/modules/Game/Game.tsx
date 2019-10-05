@@ -5,7 +5,14 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Form, Input, Loader, Progress, Segment } from 'semantic-ui-react';
+import {
+  Form,
+  Header,
+  Input,
+  Loader,
+  Progress,
+  Segment,
+} from 'semantic-ui-react';
 import Timer from '../../components/Timer';
 import { fetchRandomText } from '../../dataProvider';
 
@@ -37,7 +44,7 @@ const Game = () => {
         <Loader />
       ) : (
         <>
-          <div>
+          <Header inverted>
             {isGameStarted ? (
               <>
                 The race is on! Type the text below: <Timer seconds={60 * 3} />
@@ -48,7 +55,7 @@ const Game = () => {
                 <Timer seconds={10} onEnd={onWaitingTimerEnd} />
               </>
             )}
-          </div>
+          </Header>
           <Progress percent={0} indicating color="olive" />
           <Segment inverted>{currentText}</Segment>
           <Form.Field>
