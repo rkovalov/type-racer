@@ -1,4 +1,5 @@
-import users from '../mock/users';
+import mockUsers from '../mock/users';
+import * as session from '../store/session';
 import { User } from '../types';
 import { request } from '../utils';
 
@@ -8,6 +9,33 @@ interface ErrorResponse {
 }
 
 type UserResponse = ErrorResponse | User;
+
+export const signout = (): Promise<undefined> =>
+  new Promise(resolve => {
+    session.removeUser();
+    resolve();
+  });
+
+export const signin = (
+  user: Pick<User, 'nickname' | 'password'>,
+): Promise<User | undefined> => {
+  const mockUser = mockUsers.find(
+    ({ nickname, password }) =>
+      user.nickname === nickname && user.password === password,
+  );
+  return new Promise((resolve, reject) => {
+    mockUser
+      ? fetchUser(mockUser).then(userDb => {
+          if ('nickname' in userDb && userDb.nickname === mockUser.nickname) {
+            session.setUser(mockUser);
+            resolve(userDb);
+          } else {
+            reject();
+          }
+        })
+      : reject();
+  });
+};
 
 export const fetchRandomText = (): Promise<string[]> =>
   request
@@ -38,6 +66,6 @@ export const updateUser = (user: User) => {
 };
 
 export const fetchAllUsers = (): Promise<UserResponse[]> =>
-  Promise.all(users.map(fetchUser)).then(([...userResponses]) =>
+  Promise.all(mockUsers.map(fetchUser)).then(([...userResponses]) =>
     userResponses.filter(u => !isErrorResponse(u)),
   );

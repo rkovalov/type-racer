@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Dropdown, Image } from 'semantic-ui-react';
-import { signout } from '../../store/session';
+import { signout } from '../../dataProvider';
 
 import StoreContext from '../../store/context';
 

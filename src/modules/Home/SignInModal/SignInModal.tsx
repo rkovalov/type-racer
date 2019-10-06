@@ -10,8 +10,8 @@ import {
   Modal,
 } from 'semantic-ui-react';
 
+import { signin } from '../../../dataProvider';
 import StoreContext from '../../../store/context';
-import { signin } from '../../../store/session';
 
 interface Props {
   open: boolean;
