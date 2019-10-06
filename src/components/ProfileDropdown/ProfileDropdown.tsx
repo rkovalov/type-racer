@@ -10,6 +10,7 @@ const ProfileDropdown = ({ history }: RouteComponentProps) => {
     history,
   ]);
   const [state] = useContext(StoreContext);
+  const gender = (state.currentUser && state.currentUser.gender) || 'male';
   return (
     <Dropdown
       direction="left"
@@ -19,7 +20,7 @@ const ProfileDropdown = ({ history }: RouteComponentProps) => {
           style={{ display: 'inline-block', marginLeft: '5px' }}
           circular
           size="mini"
-          src={process.env.PUBLIC_URL + '/male.png'}
+          src={process.env.PUBLIC_URL + `/${gender}.png`}
         />
       }
     >

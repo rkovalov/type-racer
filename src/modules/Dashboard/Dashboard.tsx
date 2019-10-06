@@ -3,7 +3,6 @@ import { Grid, Header } from 'semantic-ui-react';
 import Game from '../Game';
 import TopPlayers from '../TopPlayers';
 
-// import StoreContext from '../../store/context';
 import ProfileDropdown from '../../components/ProfileDropdown';
 
 const Dashboard = () => {
