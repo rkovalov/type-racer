@@ -19,7 +19,7 @@ const App: React.FC = () => {
   return (
     <div className={styles.app}>
       <StoreContext.Provider value={[state, setState]}>
-        <Router>
+        <Router basename={process.env.REACT_APP_BASE_URL}>
           <Switch>
             <Route exact path="/" component={Home} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
