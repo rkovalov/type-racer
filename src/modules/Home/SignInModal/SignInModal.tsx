@@ -34,8 +34,7 @@ const SignInModal = React.memo(({ onClose, open, onSigninSuccess }: Props) => {
         setState(prevState => ({ ...prevState, currentUser: user }));
         onSigninSuccess();
       })
-      .catch(() => setHasError(true))
-      .finally(() => setInProgress(false));
+      .catch(() => setHasError(true));
   }, [nickname, password, onSigninSuccess, setState]);
   const isValid = nickname && password;
   return (
@@ -89,4 +88,5 @@ const SignInModal = React.memo(({ onClose, open, onSigninSuccess }: Props) => {
   );
 });
 
+SignInModal.displayName = 'SignInModal';
 export default SignInModal;
