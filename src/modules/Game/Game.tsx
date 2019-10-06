@@ -1,9 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Form, Header, Loader, Progress, Segment } from 'semantic-ui-react';
+import { Form, Header, Loader, Progress } from 'semantic-ui-react';
 import Timer from '../../components/Timer';
 import CheckedInput from './components/CheckedInput';
+import CheckedText from './components/CheckedText';
 import useTexts from './hooks/useTexts';
-import textMap from './utils/textMap';
+import * as utils from './utils';
 
 const Game = () => {
   const [playedTextIdxs] = useState<number[]>([]);
@@ -17,12 +18,12 @@ const Game = () => {
     return texts[playedTextIdxs.length];
   }, [playedTextIdxs, texts]);
 
-  const quoteMap = useMemo(() => textMap(currentText), [currentText]);
-  const currentWord = useMemo(() => quoteMap.getWord(wordIndex), [
-    quoteMap,
+  const textMap = useMemo(() => utils.textMap(currentText), [currentText]);
+  const currentWord = useMemo(() => textMap.getWord(wordIndex), [
+    textMap,
     wordIndex,
   ]);
-  // const currentOffset = quoteMap.getWordOffset(wordIndex);
+  // const currentOffset = textMap.getWordOffset(wordIndex);
   // const cursorPosition = currentOffset + currentInput.length;
 
   const onWaitingTimerEnd = useCallback(() => {
@@ -32,14 +33,14 @@ const Game = () => {
   const onGameTimerEnd = useCallback(() => [], []);
 
   const onWordMatch = useCallback(() => {
-    if (wordIndex < quoteMap.wordsCount() - 1) {
-      setProgress(((wordIndex + 1) * 100) / quoteMap.wordsCount());
+    if (wordIndex < textMap.wordsCount() - 1) {
+      setProgress(((wordIndex + 1) * 100) / textMap.wordsCount());
       setWordIndex(wordIndex + 1);
     } else {
-      setProgress(1);
+      setProgress(100);
       // Finish
     }
-  }, [setWordIndex, setProgress, wordIndex, quoteMap]);
+  }, [setWordIndex, setProgress, wordIndex, textMap]);
 
   const onGameTimerTick = (elapsedSeconds: number) => {
     setCurrentWpm(Math.floor((wordIndex * 60) / elapsedSeconds));
@@ -76,10 +77,10 @@ const Game = () => {
           </Header>
           <div>WPM: {currentWpm}</div>
           <Progress percent={progress} indicating color="olive" />
-          <Segment inverted>{currentText}</Segment>
+          <CheckedText textMap={textMap} currentWordIndex={wordIndex} />
           <Form.Field>
             <CheckedInput
-              expectedWord={currentWord.toString()}
+              expectedWord={currentWord.text}
               disabled={!isGameStarted}
               value={currentInput}
               onInputChange={setCurrentInput}

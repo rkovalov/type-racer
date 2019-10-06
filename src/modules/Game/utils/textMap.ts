@@ -24,11 +24,10 @@ const Word = ({ offset, text }: { offset: number; text: string }) => {
     word,
     // tslint:disable-next-line: object-literal-sort-keys
     hasWhitespace: () => Boolean(whitespace),
-    toString: () => text,
   };
 };
 
-const TextMap = (text: string) => {
+export const textMap = (text: string) => {
   const allWords = mapMatches(/[^\s]+(\s|$)/g, text, (match: RegExpExecArray) =>
     Word({ text: match[0], offset: match.index }),
   );
@@ -42,5 +41,3 @@ const TextMap = (text: string) => {
     wordsCount: () => allWords.length,
   };
 };
-
-export default TextMap;
