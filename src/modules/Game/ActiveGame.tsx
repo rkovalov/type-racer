@@ -68,7 +68,7 @@ const ActiveGame = ({ text, onFinish, maxTime }: Props) => {
         ) : (
           <>
             Get Ready to Race:{' '}
-            <Timer key="waiting-timer" seconds={2} onEnd={onWaitingTimerEnd} />
+            <Timer key="waiting-timer" seconds={10} onEnd={onWaitingTimerEnd} />
           </>
         )}
       </Header>
