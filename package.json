@@ -2,6 +2,7 @@
   "name": "type-racer",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://rkovalyov.github.io/type-racer",
   "dependencies": {
     "classnames": "^2.2.6",
     "qs": "^6.9.0",
