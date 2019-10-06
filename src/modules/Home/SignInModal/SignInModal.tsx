@@ -21,18 +21,21 @@ interface Props {
 
 const SignInModal = React.memo(({ onClose, open, onSigninSuccess }: Props) => {
   const [, setState] = useContext(StoreContext);
+  const [inProgress, setInProgress] = useState(false);
   const [nickname, setNickName] = useState('');
   const [hasError, setHasError] = useState(false);
   const [password, setPassword] = useState('');
   const changeNickName = useCallback((_, { value }) => setNickName(value), []);
   const changePassword = useCallback((_, { value }) => setPassword(value), []);
   const login = useCallback(() => {
+    setInProgress(true);
     signin({ nickname, password })
       .then(user => {
         setState(prevState => ({ ...prevState, currentUser: user }));
         onSigninSuccess();
       })
-      .catch(() => setHasError(true));
+      .catch(() => setHasError(true))
+      .finally(() => setInProgress(false));
   }, [nickname, password, onSigninSuccess, setState]);
   const isValid = nickname && password;
   return (
@@ -65,7 +68,13 @@ const SignInModal = React.memo(({ onClose, open, onSigninSuccess }: Props) => {
                 onChange={changePassword}
               />
             </Form.Field>
-            <Button fluid type="submit" color="teal" disabled={!isValid}>
+            <Button
+              fluid
+              type="submit"
+              color="teal"
+              disabled={inProgress || !isValid}
+              loading={inProgress}
+            >
               Sign in
             </Button>
             {hasError && (
