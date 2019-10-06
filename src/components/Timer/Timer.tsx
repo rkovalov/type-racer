@@ -1,18 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Icon, Label } from 'semantic-ui-react';
 
+type OnTick = (elapsedSeconds: number) => void;
 interface Props {
   seconds: number;
   onEnd?: () => void;
+  onTick?: OnTick;
 }
 
 const Timer = (props: Props) => {
-  const { seconds, onEnd } = props;
+  const { seconds, onEnd, onTick } = props;
   const [secondsLeft, setSecondsLeft] = useState(seconds);
+  const onTickCb = useRef<OnTick | undefined>(onTick);
+
+  useEffect(() => {
+    onTickCb.current = onTick;
+  }, [onTick]);
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       setSecondsLeft(prevSeconds => {
         const timeLeft = --prevSeconds;
+        if (onTickCb.current) {
+          onTickCb.current(seconds - timeLeft);
+        }
         if (timeLeft === 0) {
           if (onEnd) {
             onEnd();

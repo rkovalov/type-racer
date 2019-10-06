@@ -1,41 +1,49 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import {
-  Form,
-  Header,
-  Input,
-  Loader,
-  Progress,
-  Segment,
-} from 'semantic-ui-react';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Form, Header, Loader, Progress, Segment } from 'semantic-ui-react';
 import Timer from '../../components/Timer';
-import { fetchRandomText } from '../../dataProvider';
+import CheckedInput from './components/CheckedInput';
+import useTexts from './hooks/useTexts';
+import textMap from './utils/textMap';
 
 const Game = () => {
-  const [texts, setTexts] = useState<string[]>([]);
   const [playedTextIdxs] = useState<number[]>([]);
+  const [wordIndex, setWordIndex] = useState(0);
+  const [currentWpm, setCurrentWpm] = useState(0);
+  const [progress, setProgress] = useState(1);
+  const [currentInput, setCurrentInput] = useState('');
   const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
-  const inputRef = useRef<Input>(null);
+  const [texts] = useTexts();
   const currentText = useMemo(() => {
     return texts[playedTextIdxs.length];
   }, [playedTextIdxs, texts]);
-  // const [textIndex, setTextIndex] = useState<number | null>(null);
 
-  useEffect(() => {
-    fetchRandomText().then(setTexts);
-  }, []);
+  const quoteMap = useMemo(() => textMap(currentText), [currentText]);
+  const currentWord = useMemo(() => quoteMap.getWord(wordIndex), [
+    quoteMap,
+    wordIndex,
+  ]);
+  // const currentOffset = quoteMap.getWordOffset(wordIndex);
+  // const cursorPosition = currentOffset + currentInput.length;
 
   const onWaitingTimerEnd = useCallback(() => {
     setIsGameStarted(true);
-    if (inputRef.current) {
-      inputRef.current.focus();
+  }, [setIsGameStarted]);
+
+  const onGameTimerEnd = useCallback(() => [], []);
+
+  const onWordMatch = useCallback(() => {
+    if (wordIndex < quoteMap.wordsCount() - 1) {
+      setProgress(((wordIndex + 1) * 100) / quoteMap.wordsCount());
+      setWordIndex(wordIndex + 1);
+    } else {
+      setProgress(1);
+      // Finish
     }
-  }, [setIsGameStarted, inputRef]);
+  }, [setWordIndex, setProgress, wordIndex, quoteMap]);
+
+  const onGameTimerTick = (elapsedSeconds: number) => {
+    setCurrentWpm(Math.floor((wordIndex * 60) / elapsedSeconds));
+  };
 
   return (
     <div>
@@ -47,24 +55,35 @@ const Game = () => {
           <Header inverted>
             {isGameStarted ? (
               <>
-                The race is on! Type the text below: <Timer seconds={60 * 3} />
+                The race is on! Type the text below:{' '}
+                <Timer
+                  key="game-timer"
+                  seconds={60 * 3}
+                  onEnd={onGameTimerEnd}
+                  onTick={onGameTimerTick}
+                />
               </>
             ) : (
               <>
                 Get Ready to Race:{' '}
-                <Timer seconds={10} onEnd={onWaitingTimerEnd} />
+                <Timer
+                  key="waiting-timer"
+                  seconds={2}
+                  onEnd={onWaitingTimerEnd}
+                />
               </>
             )}
           </Header>
-          <Progress percent={0} indicating color="olive" />
+          <div>WPM: {currentWpm}</div>
+          <Progress percent={progress} indicating color="olive" />
           <Segment inverted>{currentText}</Segment>
           <Form.Field>
-            <Input
-              fluid
-              autoFocus
-              ref={inputRef}
+            <CheckedInput
+              expectedWord={currentWord.toString()}
               disabled={!isGameStarted}
-              placeholder="Type the above text here when the race begins "
+              value={currentInput}
+              onInputChange={setCurrentInput}
+              onWordMatch={onWordMatch}
             />
           </Form.Field>
         </>
