@@ -1,8 +1,15 @@
 import React from 'react';
 import imgSrc from './404.svg';
 
-const Page404 = () => (
-  <img src={imgSrc} style={{ height: '100vh' }} alt="404" />
-);
+const Page404 = React.memo(() => (
+  <img
+    src={imgSrc}
+    style={{ height: '100vh' }}
+    alt="404"
+    data-testid="404-img"
+  />
+));
 
-export default React.memo(Page404);
+Page404.displayName = 'Page404';
+
+export default Page404;
