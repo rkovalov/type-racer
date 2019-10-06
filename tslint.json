@@ -5,6 +5,7 @@
     "prettier": [true, null, { "editorconfig": false }],
     "interface-name": false,
     "jsx-boolean-value": false,
-    "jsx-no-lambda": false
+    "jsx-no-lambda": false,
+    "object-literal-sort-keys": false
   }
 }

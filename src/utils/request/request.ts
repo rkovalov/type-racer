@@ -37,8 +37,7 @@ const buildURL = (url: string, params?: object): string => {
 };
 
 const defaultHeaders = {
-  // 'Access-Control-Allow-Origin': '*',
-  // 'Content-type': 'application/json;charset=UTF-8',
+  // 'content-type': 'application/json;charset=UTF-8',
 };
 
 const createXhr: RequestFn = (

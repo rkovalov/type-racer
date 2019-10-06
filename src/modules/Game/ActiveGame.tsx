@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Form, Header, Progress } from 'semantic-ui-react';
 import Timer from '../../components/Timer';
 import CheckedInput from './components/CheckedInput';
@@ -28,6 +28,13 @@ const ActiveGame = ({ text, onFinish, maxTime }: Props) => {
       onFinish({ wpm, progress });
     }
   }, [onFinish, wpm, progress]);
+
+  useEffect(() => {
+    if (progress === 100) {
+      onGameFinish();
+    }
+  }, [onGameFinish, progress]);
+
   const onWaitingTimerEnd = useCallback(() => {
     setIsGameStarted(true);
   }, [setIsGameStarted]);
@@ -38,9 +45,8 @@ const ActiveGame = ({ text, onFinish, maxTime }: Props) => {
       setWordIndex(wordIndex + 1);
     } else {
       setProgress(100);
-      onGameFinish();
     }
-  }, [setWordIndex, setProgress, wordIndex, textMap, onGameFinish]);
+  }, [setWordIndex, setProgress, wordIndex, textMap]);
 
   const onGameTimerTick = (elapsedSeconds: number) => {
     setWpm(Math.floor((wordIndex * 60) / elapsedSeconds));
