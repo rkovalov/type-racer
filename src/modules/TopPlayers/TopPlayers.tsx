@@ -25,7 +25,7 @@ const TopPlayers = () => {
   const [users] = useUsersResult();
   return (
     <>
-      <h3>Best WPM:</h3>
+      <h3>Best WPM</h3>
       <Transition.Group
         inverted
         as={List}
