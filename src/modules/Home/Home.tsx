@@ -1,14 +1,15 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useContext, useMemo } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button } from 'semantic-ui-react';
 
-import { isAuthenticated } from '../../store/session';
+import StoreContext from '../../store/context';
 import styles from './Home.module.scss';
 import logo from './logo.png';
 import SignInModal from './SignInModal';
 
 const Home = (props: RouteComponentProps) => {
   const { match, history, location } = props;
+  const [{ currentUser }] = useContext(StoreContext);
   const openSignModal = useCallback(() => {
     history.push('/?sign-in');
   }, [history]);
@@ -21,6 +22,7 @@ const Home = (props: RouteComponentProps) => {
   const onSigninSuccess = useCallback(() => {
     history.push('/dashboard');
   }, [history]);
+
   return (
     <>
       <header className={styles.header}>
@@ -32,7 +34,7 @@ const Home = (props: RouteComponentProps) => {
         <h2>Type Racer Game</h2>
         <div className="">Increase your typing speed!</div>
         <br />
-        {isAuthenticated() ? (
+        {currentUser ? (
           <Link to="/dashboard">
             <Button color="teal" size="big">
               My Dashboard

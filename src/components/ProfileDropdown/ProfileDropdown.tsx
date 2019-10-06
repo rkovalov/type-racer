@@ -6,10 +6,17 @@ import { signout } from '../../store/session';
 import StoreContext from '../../store/context';
 
 const ProfileDropdown = ({ history }: RouteComponentProps) => {
-  const logout = useCallback(() => signout().then(() => history.push('/')), [
-    history,
-  ]);
-  const [state] = useContext(StoreContext);
+  const [state, setState] = useContext(StoreContext);
+
+  const logout = useCallback(
+    () =>
+      signout().then(() => {
+        setState(prevState => ({ ...prevState, currentUser: undefined }));
+        history.push('/');
+      }),
+    [history],
+  );
+
   const gender = (state.currentUser && state.currentUser.gender) || 'male';
   return (
     <Dropdown

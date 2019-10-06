@@ -15,8 +15,6 @@ export const getUser = (): User => {
   return user ? JSON.parse(user) : user;
 };
 
-export const isAuthenticated = (): boolean => !!getUser();
-
 export const signout = (): Promise<undefined> =>
   new Promise(resolve => {
     sessionStorage.removeItem(sessionStorageKey);
@@ -25,22 +23,18 @@ export const signout = (): Promise<undefined> =>
 
 export const signin = (
   user: Pick<User, 'nickname' | 'password'>,
-): Promise<User> =>
-  new Promise((resolve, reject) => {
-    const mockUser = users.find(
-      ({ nickname, password }) =>
-        user.nickname === nickname && user.password === password,
-    );
-    if (mockUser) {
-      fetchUser(mockUser).then(userDb => {
-        if ('nickname' in userDb && userDb.nickname === mockUser.nickname) {
-          setUserToStorage(mockUser);
-          resolve(userDb);
-        } else {
-          reject();
-        }
-      });
-    } else {
-      reject();
-    }
-  });
+): Promise<User | undefined> => {
+  const mockUser = users.find(
+    ({ nickname, password }) =>
+      user.nickname === nickname && user.password === password,
+  );
+  if (mockUser) {
+    return fetchUser(mockUser).then(userDb => {
+      if ('nickname' in userDb && userDb.nickname === mockUser.nickname) {
+        setUserToStorage(mockUser);
+        return userDb;
+      }
+    });
+  }
+  return Promise.reject();
+};
