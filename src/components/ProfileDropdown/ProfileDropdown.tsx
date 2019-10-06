@@ -20,6 +20,7 @@ const ProfileDropdown = ({ history }: RouteComponentProps) => {
   const gender = (state.currentUser && state.currentUser.gender) || 'male';
   return (
     <Dropdown
+      data-testid="profile-dropdown"
       direction="left"
       text={state.currentUser && state.currentUser.nickname}
       icon={
