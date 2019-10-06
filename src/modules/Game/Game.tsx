@@ -1,92 +1,52 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Form, Header, Loader, Progress } from 'semantic-ui-react';
-import Timer from '../../components/Timer';
-import CheckedInput from './components/CheckedInput';
-import CheckedText from './components/CheckedText';
+import { Button, Label, Loader } from 'semantic-ui-react';
 import useTexts from './hooks/useTexts';
-import * as utils from './utils';
+
+import ActiveGame from './ActiveGame';
 
 const Game = () => {
-  const [playedTextIdxs] = useState<number[]>([]);
-  const [wordIndex, setWordIndex] = useState(0);
-  const [currentWpm, setCurrentWpm] = useState(0);
-  const [progress, setProgress] = useState(1);
-  const [currentInput, setCurrentInput] = useState('');
-  const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
-  const [texts] = useTexts();
+  const [activeTextIdx, setActiveTextIdx] = useState(0);
+  const [inGame, setInGame] = useState(true);
+  const [lastResult, setLastResult] = useState<{
+    wpm: number;
+    progress: number;
+  }>({ wpm: 0, progress: 0 });
+
+  const [texts] = useTexts(activeTextIdx);
+
   const currentText = useMemo(() => {
-    return texts[playedTextIdxs.length];
-  }, [playedTextIdxs, texts]);
+    return texts[activeTextIdx];
+  }, [activeTextIdx, texts]);
 
-  const textMap = useMemo(() => utils.textMap(currentText), [currentText]);
-  const currentWord = useMemo(() => textMap.getWord(wordIndex), [
-    textMap,
-    wordIndex,
-  ]);
-  // const currentOffset = textMap.getWordOffset(wordIndex);
-  // const cursorPosition = currentOffset + currentInput.length;
-
-  const onWaitingTimerEnd = useCallback(() => {
-    setIsGameStarted(true);
-  }, [setIsGameStarted]);
-
-  const onGameTimerEnd = useCallback(() => [], []);
-
-  const onWordMatch = useCallback(() => {
-    if (wordIndex < textMap.wordsCount() - 1) {
-      setProgress(((wordIndex + 1) * 100) / textMap.wordsCount());
-      setWordIndex(wordIndex + 1);
-    } else {
-      setProgress(100);
-      // Finish
+  const onFinish = useCallback(({ wpm, progress }) => {
+    if (progress === 100) {
+      // sentToServer();
     }
-  }, [setWordIndex, setProgress, wordIndex, textMap]);
+    setLastResult({ wpm, progress });
+    setInGame(false);
+    setActiveTextIdx(prevIdx => prevIdx + 1);
+  }, []);
 
-  const onGameTimerTick = (elapsedSeconds: number) => {
-    setCurrentWpm(Math.floor((wordIndex * 60) / elapsedSeconds));
-  };
+  const tryAgain = useCallback(() => setInGame(true), [setInGame]);
 
   return (
     <div>
       <h3>Game</h3>
       {!texts.length ? (
         <Loader />
+      ) : inGame ? (
+        <ActiveGame text={currentText} onFinish={onFinish} maxTime={60 * 3} />
       ) : (
         <>
-          <Header inverted>
-            {isGameStarted ? (
-              <>
-                The race is on! Type the text below:{' '}
-                <Timer
-                  key="game-timer"
-                  seconds={60 * 3}
-                  onEnd={onGameTimerEnd}
-                  onTick={onGameTimerTick}
-                />
-              </>
-            ) : (
-              <>
-                Get Ready to Race:{' '}
-                <Timer
-                  key="waiting-timer"
-                  seconds={2}
-                  onEnd={onWaitingTimerEnd}
-                />
-              </>
-            )}
-          </Header>
-          <div>WPM: {currentWpm}</div>
-          <Progress percent={progress} indicating color="olive" />
-          <CheckedText textMap={textMap} currentWordIndex={wordIndex} />
-          <Form.Field>
-            <CheckedInput
-              expectedWord={currentWord.text}
-              disabled={!isGameStarted}
-              value={currentInput}
-              onInputChange={setCurrentInput}
-              onWordMatch={onWordMatch}
-            />
-          </Form.Field>
+          <div>
+            <Label>WPM: {lastResult.wpm}</Label>
+            <Label>Progress: {lastResult.progress} %</Label>
+          </div>
+          <br />
+          <br />
+          <Button onClick={tryAgain} color="blue">
+            Play Again
+          </Button>
         </>
       )}
     </div>

@@ -38,7 +38,7 @@ const Timer = (props: Props) => {
   }, []);
 
   return (
-    <Label color={undefined}>
+    <Label>
       <Icon name="clock" />
       <span style={{ width: '35px', display: 'inline-block' }}>
         {secondsLeft}
