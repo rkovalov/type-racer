@@ -37,7 +37,7 @@ export const updateUser = (user: User) => {
   });
 };
 
-export const getAllUsers = (): Promise<UserResponse[]> =>
+export const fetchAllUsers = (): Promise<UserResponse[]> =>
   Promise.all(users.map(fetchUser)).then(([...userResponses]) =>
     userResponses.filter(u => !isErrorResponse(u)),
   );

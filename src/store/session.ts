@@ -27,17 +27,14 @@ export const signin = (
   user: Pick<User, 'nickname' | 'password'>,
 ): Promise<User> =>
   new Promise((resolve, reject) => {
-    const predefinedUser = users.find(
+    const mockUser = users.find(
       ({ nickname, password }) =>
         user.nickname === nickname && user.password === password,
     );
-    if (predefinedUser) {
-      fetchUser(predefinedUser).then(userDb => {
-        if (
-          'nickname' in userDb &&
-          userDb.nickname === predefinedUser.nickname
-        ) {
-          setUserToStorage(predefinedUser);
+    if (mockUser) {
+      fetchUser(mockUser).then(userDb => {
+        if ('nickname' in userDb && userDb.nickname === mockUser.nickname) {
+          setUserToStorage(mockUser);
           resolve(userDb);
         } else {
           reject();

@@ -12,7 +12,7 @@ const Dashboard = () => {
       <Header inverted dividing textAlign="right" style={{ padding: '10px' }}>
         <ProfileDropdown />
       </Header>
-      <Grid divided inverted stretched style={{ padding: '0 20px' }}>
+      <Grid divided inverted style={{ padding: '0 20px' }}>
         <Grid.Column width={4}>
           <TopPlayers />
         </Grid.Column>
