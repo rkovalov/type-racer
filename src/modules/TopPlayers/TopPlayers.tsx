@@ -12,7 +12,16 @@ const useUsersResult = () => {
         const filteredData = data.filter(
           dataItem => 'nickname' in dataItem,
         ) as User[];
-        setUsers(filteredData.sort((a, b) => (a < b ? 1 : -1)));
+        setUsers(
+          filteredData.sort((a, b) => {
+            if (!a.bestWpm) {
+              return 1;
+            } else if (!b.bestWpm) {
+              return -1;
+            }
+            return Number(b.bestWpm) - Number(a.bestWpm);
+          }),
+        );
       });
     fetch();
     const intervalId = setInterval(fetch, 5000);

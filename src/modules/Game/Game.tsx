@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { Button, Label, Loader } from 'semantic-ui-react';
 
 import { updateUser as updateUserDP } from '../../dataProvider';
@@ -18,9 +18,7 @@ const Game = () => {
 
   const [texts] = useTexts(activeTextIdx);
 
-  const currentText = useMemo(() => {
-    return texts[activeTextIdx];
-  }, [activeTextIdx, texts]);
+  const currentText = texts[activeTextIdx];
 
   const onFinish = useCallback(
     ({ wpm, progress }) => {
