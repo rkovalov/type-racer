@@ -38,7 +38,6 @@ const Game = () => {
 
   return (
     <div>
-      <h3>Game</h3>
       {!texts.length ? (
         <Loader inverted active inline="centered">
           Loading...

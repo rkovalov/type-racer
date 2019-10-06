@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Image, List, Transition } from 'semantic-ui-react';
 import { fetchAllUsers } from '../../dataProvider';
 import { User } from '../../types';
+
 import styles from './TopPlayers.module.scss';
 
 const useUsersResult = () => {
@@ -34,15 +35,17 @@ const TopPlayers = () => {
   const [users] = useUsersResult();
   return (
     <>
-      <h3>Best WPM</h3>
+      <h3>Top Players</h3>
+      <div className={styles.listHeader}>wpm</div>
       <Transition.Group
         inverted
+        divided
+        relaxed
         as={List}
         duration={200}
-        divided
-        size="huge"
+        size="large"
         verticalAlign="middle"
-        style={{ textAlign: 'left' }}
+        style={{ marginTop: 0 }}
       >
         {users.map(user => (
           <List.Item key={user.nickname}>
