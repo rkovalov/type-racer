@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/type-racer/static/css/main.286e1c38.chunk.css",
+    "main.js": "/type-racer/static/js/main.777f6028.chunk.js",
+    "main.js.map": "/type-racer/static/js/main.777f6028.chunk.js.map",
+    "runtime-main.js": "/type-racer/static/js/runtime-main.6ba000dc.js",
+    "runtime-main.js.map": "/type-racer/static/js/runtime-main.6ba000dc.js.map",
+    "static/css/2.d9f53875.chunk.css": "/type-racer/static/css/2.d9f53875.chunk.css",
+    "static/js/2.72f97a94.chunk.js": "/type-racer/static/js/2.72f97a94.chunk.js",
+    "static/js/2.72f97a94.chunk.js.map": "/type-racer/static/js/2.72f97a94.chunk.js.map",
+    "index.html": "/type-racer/index.html",
+    "precache-manifest.fff020c64e2a2b0a7691173d23b82b95.js": "/type-racer/precache-manifest.fff020c64e2a2b0a7691173d23b82b95.js",
+    "service-worker.js": "/type-racer/service-worker.js",
+    "static/css/2.d9f53875.chunk.css.map": "/type-racer/static/css/2.d9f53875.chunk.css.map",
+    "static/css/main.286e1c38.chunk.css.map": "/type-racer/static/css/main.286e1c38.chunk.css.map",
+    "static/media/404.svg": "/type-racer/static/media/404.b3f1c2e9.svg",
+    "static/media/semantic.min.css": "/type-racer/static/media/outline-icons.ef60a4f6.woff",
+    "static/media/logo.png": "/type-racer/static/media/logo.9d028f49.png"
+  }
+}
