@@ -1,5 +1,32 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## [Try Demo](http://rkovalyov.github.io/type-racer)
+
+## Predefined users:
+```javascript
+[{
+    nickname: 'rudolf',
+    password: '123123',
+  },
+  {
+    nickname: 'bob',
+    password: '123123',
+  },
+  {
+    nickname: 'maria',
+    password: '123123',
+  },
+  {
+    nickname: 'john',
+    password: '123123',
+  },
+  {
+    nickname: 'oxy',
+    password: '123123',
+  },
+]
+```
+____________________________________________________
 ## Available Scripts
 
 In the project directory, you can run:
