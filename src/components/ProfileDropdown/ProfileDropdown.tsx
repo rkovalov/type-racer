@@ -14,7 +14,7 @@ const ProfileDropdown = ({ history }: RouteComponentProps) => {
         setState(prevState => ({ ...prevState, currentUser: undefined }));
         history.push('/');
       }),
-    [history],
+    [history, setState],
   );
 
   const gender = (state.currentUser && state.currentUser.gender) || 'male';
