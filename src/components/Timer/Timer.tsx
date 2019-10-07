@@ -38,7 +38,7 @@ const Timer = (props: Props) => {
   }, []);
 
   return (
-    <Label>
+    <Label data-testid="timer">
       <Icon name="clock" />
       <span style={{ width: '35px', display: 'inline-block' }}>
         {secondsLeft}
