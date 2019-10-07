@@ -47,7 +47,7 @@
     "test:staged": "cross-env CI=true react-scripts test --env=jsdom --findRelatedTests",
     "lint:staged": "tslint -c tslint.json --fix",
     "format:staged": "prettier --write",
-    "predeploy": "yarn build",
+    "predeploy": "cross-env CI=true yarn test ./src && yarn build",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
