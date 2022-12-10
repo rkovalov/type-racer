@@ -5,7 +5,7 @@
   "homepage": "http://rkovalyov.github.io/type-racer",
   "dependencies": {
     "classnames": "^2.2.6",
-    "qs": "^6.9.0",
+    "qs": "^6.9.7",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
     "react-router-dom": "^5.1.2",
